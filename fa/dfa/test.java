@@ -1,6 +1,9 @@
 package fa.dfa;
 
-
+/**
+ * This is a class to help test out some of the DFA functionality before 
+ * running unit tests
+ */
 
 public class test {
    public static void main(String[] args) {
