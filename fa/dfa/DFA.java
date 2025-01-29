@@ -1,8 +1,6 @@
 package fa.dfa;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -26,18 +24,20 @@ public class DFA implements DFAInterface {
 
     @Override
     public boolean addState(String name) {
-        
-        
+        DFAState newState = new DFAState(name);
 
-        return states.add(new DFAState(name));
+        if (states.contains(newState)) {
+            return false; // State already exists
+        }
 
+        return states.add(newState);
     }
 
     @Override
     public boolean setFinal(String name) {
 
         for (DFAState DFAState : states) {
-            if (DFAState.equals(name)) {
+            if (DFAState.getName().equals(name)) {
                 finalState.add(DFAState);
                 return true;
             }
@@ -49,18 +49,16 @@ public class DFA implements DFAInterface {
 
     @Override
     public boolean setStart(String name) {
-        if(startState.size() == 0){
-            startState.add(new DFAState(name));
-                return true;
-        }
-        for (DFAState DFAState : states) {
-            if (DFAState.equals(name) && (startState.size() == 0)) {
-                startState.add(DFAState);
-                return true;
-            
-
+        if (startState.size() < 1) {
+            for (DFAState DFAState : states) {
+                if (DFAState.getName().equals(name) && (startState.size() == 0)) {
+                    startState.add(DFAState);
+                    return true;
+                }
             }
+
         }
+
         return false;
     }
 
@@ -71,15 +69,20 @@ public class DFA implements DFAInterface {
 
     @Override
     public boolean accepts(String s) {
-        boolean doesContain = true;
+        if (startState.isEmpty())
+            return false;
+        DFAState currentState = startState.iterator().next();
 
-        for (int i = 0; i < s.length(); i++) {
-            if (!(sigma.contains(s.charAt(i)))) {
-                doesContain = false;
-                break;
-            }
+        for (char c : s.toCharArray()) {
+            if (!sigma.contains(c))
+                return false;
+            Map<Character, DFAState> trans = transitions.get(currentState);
+            if (trans == null || !trans.containsKey(c))
+                return false;
+            currentState = trans.get(c);
         }
-        return doesContain;
+
+        return finalState.contains(currentState);
     }
 
     @Override
@@ -90,7 +93,7 @@ public class DFA implements DFAInterface {
     @Override
     public State getState(String name) {
         for (State state : states) {
-            if (state.equals(name)) {
+            if (state.getName().equals(name)) {
                 return state;
             }
 
@@ -101,7 +104,7 @@ public class DFA implements DFAInterface {
     @Override
     public boolean isFinal(String name) {
         for (DFAState state : finalState) {
-            if (state.equals(name)) {
+            if (state.getName().equals(name)) {
                 return true;
             }
         }
@@ -110,12 +113,21 @@ public class DFA implements DFAInterface {
 
     @Override
     public boolean isStart(String name) {
-        return startState.contains(name);
+        for (DFAState dfaState : startState) {
+            if (dfaState.getName().equals(name)) {
+                return true;
+            }
+
+        }
+        return false;
     }
 
     @Override
     public boolean addTransition(String fromState, String toState, char onSymb) {
-        // Find the source and destination states
+
+        if (!sigma.contains(onSymb))
+            return false;
+
         DFAState source = null;
         DFAState destination = null;
 
@@ -204,7 +216,7 @@ public class DFA implements DFAInterface {
 
         // 3. Transition Table (delta)
         sb.append("delta =\n");
-        sb.append("\t"); // Initial tab for column headers
+        sb.append("\t"); // Column headers for symbols
         for (Character symbol : sigma) {
             sb.append(symbol).append("\t");
         }
@@ -218,7 +230,7 @@ public class DFA implements DFAInterface {
                 if (stateTransitions != null && stateTransitions.containsKey(symbol)) {
                     sb.append(stateTransitions.get(symbol).getName()).append("\t");
                 } else {
-                    sb.append("-\t"); // Use "-" to indicate no transition
+                    sb.append("-\t"); // Indicate no transition
                 }
             }
             sb.append("\n");
@@ -226,9 +238,10 @@ public class DFA implements DFAInterface {
 
         // 4. Start State (q0)
         sb.append("q0 = ");
-        for (DFAState state : startState) {
-            sb.append(state.getName());
-            break; // Only one start state is expected
+        if (!startState.isEmpty()) {
+            sb.append(startState.iterator().next().getName());
+        } else {
+            sb.append("None"); // No start state set
         }
         sb.append("\n");
 
