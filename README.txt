@@ -20,6 +20,16 @@ project. Answer the following questions (but feel free to add other insights):
 - What would you change about your design process?
 - If you could go back in time, what would you tell yourself about doing this project?
 
+
+The biggest struggle was going creating the transitions using a map. I've worked with hash maps a in CS321 but not enough to say I'm an expert.
+So it took some time reading the documentation and testing to see if it transitions properly. What worked well was following the interface and
+creating a custom equals method. The custom method made life simpler when finding states based on a string. To make it easy to debug, I tried making
+the code easy to read and adding comments when nessacary. We would use the debugger on the tests to see what was getting returned and use that to 
+modify the method that was failing.
+The only thing I can think about changing the design is taking more time to think about other structures that can be used to make searching for states 
+quicker. We are searching linearly so maybe having an id on the states as well could help eliminate some states. I would tell myself in the past to look 
+at the test cases to help add checks for certain methods so we won't scratch our heads debugging the code. There isn't any concepts that aren't clear to
+me and that helped me build the class quicker.
 ## Compiling and Using
 
 To run the program follow these steps:
@@ -28,7 +38,7 @@ To run the program follow these steps:
     * fa
     * lib
     * test
-- Compile the progam using the following command (your working directory will be different)
+- Compile the program using the following command (your working directory will be different)
     javac -cp .:/usr/share/java/junit.jar ./test/dfa/DFATest.java
 - Run the tests using the following command:
     java -cp .:/usr/share/java/junit.jar:/usr/share/java/hamcrest/core.jar org.junit.runner.JUnitCore test.dfa.DFATest
