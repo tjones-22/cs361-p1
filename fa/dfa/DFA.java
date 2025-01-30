@@ -57,6 +57,14 @@ public class DFA implements DFAInterface {
                 }
             }
 
+        } else {
+            for (DFAState DFAState : states) {
+                if (DFAState.getName().equals(name)) {
+                    startState.clear();
+                    startState.add(DFAState);
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -151,7 +159,7 @@ public class DFA implements DFAInterface {
 
         if (stateTransitions.containsKey(onSymb)) {
             // Transition for this symbol already exists; return false to indicate failure
-            return false;
+            return true;
         }
 
         stateTransitions.put(onSymb, destination);
