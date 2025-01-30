@@ -174,22 +174,32 @@ public class DFA implements DFAInterface {
             }
         }
 
+        // Copy sigma set
+        for (Character symbol : sigma) {
+            newDFA.addSigma(symbol);
+        }
+
         // Copy transitions with swapped labels
         for (DFAState fromState : transitions.keySet()) {
             Map<Character, DFAState> stateTransitions = transitions.get(fromState);
 
+            // Grabbing specific state tansition
             for (Map.Entry<Character, DFAState> entry : stateTransitions.entrySet()) {
                 char symbol = entry.getKey();
                 DFAState toState = entry.getValue();
 
-                // Swap the transition label if necessary
+                // Determine which symbol to use
+                char transitionSymbol;
                 if (symbol == symb1) {
-                    newDFA.addTransition(fromState.getName(), toState.getName(), symb2);
+                    transitionSymbol = symb2;
                 } else if (symbol == symb2) {
-                    newDFA.addTransition(fromState.getName(), toState.getName(), symb1);
+                    transitionSymbol = symb1;
                 } else {
-                    newDFA.addTransition(fromState.getName(), toState.getName(), symbol);
+                    transitionSymbol = symbol;
                 }
+
+                // Add the transition
+                newDFA.addTransition(fromState.getName(), toState.getName(), transitionSymbol);
             }
         }
 
