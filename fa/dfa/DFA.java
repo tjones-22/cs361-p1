@@ -27,7 +27,7 @@ public class DFA implements DFAInterface {
         DFAState newState = new DFAState(name);
 
         if (states.contains(newState)) {
-            return false; // State already exists
+            return false;
         }
 
         return states.add(newState);
@@ -51,7 +51,7 @@ public class DFA implements DFAInterface {
     public boolean setStart(String name) {
         if (startState.size() < 1) {
             for (DFAState DFAState : states) {
-                if (DFAState.getName().equals(name) && (startState.size() == 0)) {
+                if (DFAState.getName().equals(name)) {
                     startState.add(DFAState);
                     return true;
                 }
@@ -69,16 +69,16 @@ public class DFA implements DFAInterface {
 
     @Override
     public boolean accepts(String s) {
-        if (startState.isEmpty())
-            return false;
+        if (startState.isEmpty()) return false;
+
         DFAState currentState = startState.iterator().next();
 
         for (char c : s.toCharArray()) {
-            if (!sigma.contains(c))
-                return false;
+            if (!sigma.contains(c)) return false;
+
             Map<Character, DFAState> trans = transitions.get(currentState);
-            if (trans == null || !trans.containsKey(c))
-                return false;
+            if (trans == null || !trans.containsKey(c))return false;
+            
             currentState = trans.get(c);
         }
 
