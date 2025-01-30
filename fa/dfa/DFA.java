@@ -7,13 +7,27 @@ import java.util.Set;
 
 import fa.State;
 
+/**
+ * @author Tristan Jones
+ * @author Bryce Kratzer
+ * 
+ *  This class builds a DFA object for a user to be able to add states
+ *  and connect them given the alphabet of their choice
+ */
+
 public class DFA implements DFAInterface {
+    // instance variables
+
     private LinkedHashSet<DFAState> states;
     private LinkedHashSet<Character> sigma;
     private LinkedHashSet<DFAState> startState;
     private LinkedHashSet<DFAState> finalState;
     private Map<DFAState, Map<Character, DFAState>> transitions;
 
+    /**
+     * @constructor
+     *              constructor for DFA object
+     */
     public DFA() {
         states = new LinkedHashSet<DFAState>();
         sigma = new LinkedHashSet<Character>();
@@ -49,7 +63,7 @@ public class DFA implements DFAInterface {
 
     @Override
     public boolean setStart(String name) {
-        if (startState.size() < 1) {
+        if (startState.size() == 0) {
             for (DFAState DFAState : states) {
                 if (DFAState.getName().equals(name)) {
                     startState.add(DFAState);
@@ -77,16 +91,19 @@ public class DFA implements DFAInterface {
 
     @Override
     public boolean accepts(String s) {
-        if (startState.isEmpty()) return false;
+        if (startState.isEmpty())
+            return false;
 
         DFAState currentState = startState.iterator().next();
 
         for (char c : s.toCharArray()) {
-            if (!sigma.contains(c)) return false;
+            if (!sigma.contains(c))
+                return false;
 
             Map<Character, DFAState> trans = transitions.get(currentState);
-            if (trans == null || !trans.containsKey(c))return false;
-            
+            if (trans == null || !trans.containsKey(c))
+                return false;
+
             currentState = trans.get(c);
         }
 
