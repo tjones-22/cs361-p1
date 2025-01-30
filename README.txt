@@ -24,7 +24,7 @@ project. Answer the following questions (but feel free to add other insights):
 The biggest struggle was going creating the transitions using a map. I've worked with hash maps a in CS321 but not enough to say I'm an expert.
 So it took some time reading the documentation and testing to see if it transitions properly. What worked well was following the interface and
 creating a custom equals method. The custom method made life simpler when finding states based on a string. To make it easy to debug, I tried making
-the code easy to read and adding comments when nessacary. We would use the debugger on the tests to see what was getting returned and use that to 
+the code easy to read and adding comments when necessary. We would use the debugger on the tests to see what was getting returned and use that to 
 modify the method that was failing.
 The only thing I can think about changing the design is taking more time to think about other structures that can be used to make searching for states 
 quicker. We are searching linearly so maybe having an id on the states as well could help eliminate some states. I would tell myself in the past to look 
