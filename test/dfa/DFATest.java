@@ -414,7 +414,6 @@ private DFA dfa4() {
 	DFA dfa = new DFA();
 	dfa.addSigma('1');
 	dfa.addSigma('2');
-	dfa.addSigma('3');
 	
 	assertTrue(dfa.addState("a"));
 	assertTrue(dfa.addState("b"));
@@ -426,14 +425,11 @@ private DFA dfa4() {
 	assertFalse(dfa.setFinal("f"));
 	
 	assertTrue(dfa.addTransition("a", "b", '1'));
-	assertTrue(dfa.addTransition("a", "b", '2'));
-	assertTrue(dfa.addTransition("a", "c", '3'));
-	assertTrue(dfa.addTransition("b", "b", '3'));
-	assertTrue(dfa.addTransition("b", "c", '1'));
 	assertTrue(dfa.addTransition("b", "a", '2'));
-	assertTrue(dfa.addTransition("c", "c", '1'));
-	assertTrue(dfa.addTransition("c", "c", '2'));
-	assertTrue(dfa.addTransition("c", "b", '3'));
+	assertTrue(dfa.addTransition("b", "c", '1'));
+	assertTrue(dfa.addTransition("c", "b", '2'));
+	assertTrue(dfa.addTransition("c", "a", '2'));
+	assertTrue(dfa.addTransition("a", "c", '1'));
 	
 	assertFalse(dfa.addTransition("c", "a", '4'));
 	assertFalse(dfa.addTransition("d", "c", '1'));
@@ -444,11 +440,22 @@ private DFA dfa4() {
 @Test
 public void test4_1() {
 	DFA dfa = dfa4();
-	assertTrue(dfa.accepts("111212"));
-	assertTrue(dfa.accepts("332131"));
-	assertFalse(dfa.accepts("12"));
-	assertFalse(dfa.accepts("1233"));
-	assertFalse(dfa.accepts("3332"));
+	assertTrue(dfa.accepts("11"));
+	assertTrue(dfa.accepts("121"));
+	
+	System.out.println("dfa4_1 accept pass");
+}
+
+@Test
+public void test4_2() {
+	DFA dfa = dfa4();
+	DFA dfaswap = dfa.swap('1', '2');
+	assertTrue(dfaswap.accepts("22"));
+	assertTrue(dfaswap.accepts("2212"));
+	assertTrue(dfaswap.accepts("212122"));
+
+	assertFalse(dfaswap.accepts("11"));
+	assertFalse(dfaswap.accepts("121"));
 	
 	System.out.println("dfa4_1 accept pass");
 }
