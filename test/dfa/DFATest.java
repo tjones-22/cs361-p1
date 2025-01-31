@@ -160,6 +160,9 @@ public class DFATest {
 		assertFalse(dfa.addTransition("3", "a", '1'));
 		assertFalse(dfa.addTransition("c", "a", '1'));
 		assertFalse(dfa.addTransition("3", "a", '2'));
+
+		// added test
+		assertFalse(dfa.addTransition("3", "0", '2'));
 		
 		return dfa;
 	}

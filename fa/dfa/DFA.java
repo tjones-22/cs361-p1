@@ -174,10 +174,8 @@ public class DFA implements DFAInterface {
         transitions.putIfAbsent(source, new HashMap<>());
         Map<Character, DFAState> stateTransitions = transitions.get(source);
 
-        if (stateTransitions.containsKey(onSymb)) {
-            // Transition for this symbol already exists; return false to indicate failure
-            return true;
-        }
+        if (stateTransitions.containsKey(onSymb))return true;
+        
 
         stateTransitions.put(onSymb, destination);
         return true;
